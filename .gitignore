@@ -1,0 +1,8 @@
+typings/**
+node_modules
+*.js
+*.js.map
+npm-debug.log
+.vscode/**
+!systemjs.config.js
+!typings/typings.d.ts
