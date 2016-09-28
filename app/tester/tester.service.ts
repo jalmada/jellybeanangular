@@ -9,7 +9,7 @@ export class TesterService
   private _deadCount : number = 0;
   private _verbose : boolean = false;
   private _mode : number = 0;
-  
+  private _results : any = {};
   //_mode:
   //0 = No swtich
   //1 = Always switch
@@ -26,8 +26,6 @@ export class TesterService
   {
     for(let i = 0; i < n; i++)
     {
-      //if(this._verbose)console.log("=============== Run " + (i + 1) + "===============================");
-
       let jellybeans : Jellybean[] = [];
       jellybeans[0] = new Jellybean((Math.floor(Math.random() * 10) % 2) == 1);
       jellybeans[1] = new Jellybean(!jellybeans[0].isPoisonous ? true : (Math.floor(Math.random() * 10) % 2) == 1);
@@ -44,13 +42,28 @@ export class TesterService
       }
     }
 
-    let alivePerc : number = (this._aliveCount/n) * 100;
-    let deadPerc : number = (this._deadCount/n) * 100;
+    let alivePct : number = (this._aliveCount/n) * 100;
+    let deadPct : number = (this._deadCount/n) * 100;
 
     //Move to own method
     let resultSummary = `Final Results: Alive: ${this._aliveCount} Dead: ${this._deadCount}`;
-    let percentages = `Percentages: Alive: ${alivePerc}% Dead: ${deadPerc}%`;
+    let percentages = `Percentages: Alive: ${alivePct}% Dead: ${deadPct}%`;
     console.log(resultSummary);
     console.log(percentages);
+
+    this._results = {
+      "aliveCount": this._aliveCount,
+      "alivePct": isNaN(alivePct) ? 0 : Math.round(alivePct * 100) / 100,
+      "deadCount": this._deadCount,
+      "deadPct": isNaN(deadPct) ? 0 : Math.round(deadPct * 100) / 100
+    };
+
+    this._aliveCount = 0;
+    this._deadCount = 0;
+  }
+
+  getResults()
+  {
+    return this._results;
   }
 }

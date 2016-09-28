@@ -9,13 +9,23 @@ import { TesterService } from './tester/tester.service';
 })
 export class AppComponent { 
 
+  numberOfTests = 0;
+  mode = "1";
+  results = {
+    "aliveCount": 0,
+    "alivePct": 0,
+    "deadCount": 0,
+    "deadPct": 0
+  };
+
   constructor(private _testerService : TesterService ){
-    
   }
 
-  ngOnInit() {
-    this._testerService.init(1, false);
-    this._testerService.run(1000);
-  }
+  ngOnInit() {}
 
+  runTests(){
+    this._testerService.init(+this.mode, false);
+    this._testerService.run(this.numberOfTests);
+    this.results = this._testerService.getResults();
+  }
 }
