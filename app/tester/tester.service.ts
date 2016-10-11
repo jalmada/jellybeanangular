@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Test } from '../models/test.model';
 import { Jellybean } from '../models/jellybean.model';
+import { LoggerService } from '../logger/logger.service';
 
 @Injectable()
 export class TesterService
@@ -10,6 +11,7 @@ export class TesterService
   private _verbose : boolean = false;
   private _mode : number = 0;
   private _results : any = {};
+  private _logger : LoggerService;
   //_mode:
   //0 = No swtich
   //1 = Always switch
@@ -17,13 +19,17 @@ export class TesterService
 
   constructor(){}
 
-  init(mode : number, verbose : boolean){
+  init(mode : number, verbose : boolean, logger: LoggerService){
     this._mode = mode;
     this._verbose = verbose;
+    this._logger = logger;
   }
 
   run(n : number)
   {
+
+    this._logger.log("Start Tests");
+
     for(let i = 0; i < n; i++)
     {
       let jellybeans : Jellybean[] = [];
