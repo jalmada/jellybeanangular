@@ -16,4 +16,8 @@ export class LoggerService
         this._console.append(message);
     }
 
+    clean(){
+        this._console.clean();
+    }
+
 }

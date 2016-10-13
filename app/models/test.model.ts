@@ -1,15 +1,19 @@
 import { Jellybean } from './jellybean.model';
+import { SwitchMode } from '../enums/switchmode';
 
 export class Test
 {
     private _result : boolean;
+    private _log : string[] = [];
 
     constructor (
         private _jellybeans : Jellybean[],
         private _mode : number = 1){}
+        
 
     public run()
     {
+        
         let whichJellybean = Math.floor(Math.random() * 10) % 3;
         let hostSelection : number;
         
@@ -23,6 +27,10 @@ export class Test
                 break;
             }
         }
+
+        this._log.push(`Player selects: ${+(whichJellybean+1)}`);
+        this._log.push(`Host selects: ${+(hostSelection+1)} is poisoned`);
+
 
         //0 = No swtich
         //1 = Always switch
@@ -40,11 +48,22 @@ export class Test
             }
         }
 
-        this._result = this._jellybeans[newJellybean].isPoisonous;
+        let finalJellybean = this._jellybeans[newJellybean];
+        let playerStatus = finalJellybean.isPoisonous ? "Dead" : "Alive";
+        let playerSwitch = switchJellybean ? "switches to" : "not switches";
+
+        this._log.push(`Player ${playerSwitch}: ${+(newJellybean+1)}`);
+        this._log.push(`Player is ${playerStatus}`);
+        
+
+        this._result = finalJellybean.isPoisonous;
     }
 
-    get result()
-    {
+    get result(){
         return this._result;
+    }
+
+    get log(): string[]{
+        return this._log;
     }
 }

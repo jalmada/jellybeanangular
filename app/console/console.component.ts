@@ -9,7 +9,7 @@ import { Component } from '@angular/core';
 })
 export class ConsoleComponent { 
 
-  textLines : string[] = ['Linea1','Linea2','Linea3'];
+  textLines : string[] = [];
   text : string = "";
 
   constructor(){
@@ -23,11 +23,17 @@ export class ConsoleComponent {
   append(message : string)
   {
       this.textLines.push(message);
-      if(this.textLines.length > 10){
-          this.textLines.shift();
-      }
+      // if(this.textLines.length > 10){
+      //     this.textLines.shift();
+      // }
       this.print();
 
+  }
+
+  clean()
+  {
+    this.textLines = [];
+    this.print();
   }
 
   print(){

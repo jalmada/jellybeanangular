@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Test } from '../models/test.model';
 import { Jellybean } from '../models/jellybean.model';
 import { LoggerService } from '../logger/logger.service';
+import { SwitchMode } from '../enums/switchmode';
+
 
 @Injectable()
 export class TesterService
@@ -28,10 +30,16 @@ export class TesterService
   run(n : number)
   {
 
-    this._logger.log("Start Tests");
+    this._logger.clean();
+    this._logger.log(`Start Tests: ${+n}`);
+    this._logger.log(`Mode: ${SwitchMode[this._mode]}`);
+    this._logger.log(`===========================`);
+    
 
     for(let i = 0; i < n; i++)
     {
+      this._logger.log(`Test: ${+i}`);
+      
       let jellybeans : Jellybean[] = [];
       jellybeans[0] = new Jellybean((Math.floor(Math.random() * 10) % 2) == 1);
       jellybeans[1] = new Jellybean(!jellybeans[0].isPoisonous ? true : (Math.floor(Math.random() * 10) % 2) == 1);
@@ -46,6 +54,13 @@ export class TesterService
       } else {
         this._deadCount++;
       }
+
+      let testLog = test.log;
+      testLog.forEach(l => {
+        this._logger.log(l);
+      });
+      this._logger.log(`===========================`);
+      
     }
 
     let alivePct : number = (this._aliveCount/n) * 100;
@@ -54,8 +69,13 @@ export class TesterService
     //Move to own method
     let resultSummary = `Final Results: Alive: ${this._aliveCount} Dead: ${this._deadCount}`;
     let percentages = `Percentages: Alive: ${alivePct}% Dead: ${deadPct}%`;
-    console.log(resultSummary);
-    console.log(percentages);
+    
+    this._logger.log(resultSummary);
+    this._logger.log(percentages);
+
+    
+    //console.log(resultSummary);
+    //console.log(percentages);
 
     this._results = {
       "aliveCount": this._aliveCount,
